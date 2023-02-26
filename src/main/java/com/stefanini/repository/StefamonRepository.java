@@ -8,4 +8,5 @@ import com.stefanini.entity.Stefamon;
 
 @ApplicationScoped
 public class StefamonRepository extends GenericDAO<Stefamon, Long> {
+	
 }

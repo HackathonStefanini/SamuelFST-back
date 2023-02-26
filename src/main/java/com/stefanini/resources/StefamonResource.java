@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 import com.stefanini.service.StefamonService;
 
-@Path("/stefamon")
+@Path("/stefamons")
 public class StefamonResource {
 
     @Inject
@@ -25,5 +25,5 @@ public class StefamonResource {
     public Response pegarPorId(@PathParam("id") Long id) {
         return Response.status(Response.Status.OK).entity(service.pegarPorId(id)).build();
     }
-
+    
 }
