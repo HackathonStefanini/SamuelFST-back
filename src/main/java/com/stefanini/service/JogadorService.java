@@ -40,7 +40,8 @@ public class JogadorService {
 	}
 
 	public void salvar(Jogador jogador) {
-		validarDadosJogador(jogador);
+		validarSenhaJogador(jogador);
+		validarQuantidadeStefamons(jogador);
 		jogador.setSaldo(new BigDecimal(1000.00));
 		jogadorRepository.save(jogador);
 	}
@@ -59,7 +60,8 @@ public class JogadorService {
 	}
 
 	public void alterar(Jogador jogador) {
-		validarDadosJogador(jogador);
+		validarSenhaJogador(jogador);
+		validarQuantidadeStefamons(jogador);
 		jogadorRepository.update(jogador);
 	}
 	
@@ -72,6 +74,8 @@ public class JogadorService {
 			BigDecimal novoBalanco = jogador.getSaldo().subtract(new BigDecimal(comprarStefamonDTO.getValor()));
 			List<Stefamon> stefamonsJogador = jogador.getStefamons();
 			stefamonsJogador.add(stefamon);
+			
+			validarQuantidadeStefamons(jogador);
 			
 			if (novoBalanco.compareTo(BigDecimal.ZERO) > 0) {
 				jogador.setPassword(password);
@@ -90,11 +94,13 @@ public class JogadorService {
 		jogadorRepository.delete(id);
 	}
 
-	private void validarDadosJogador(Jogador jogador) {
+	private void validarSenhaJogador(Jogador jogador) {
 		if (jogador.getPassword().length() < 4 || jogador.getPassword().length() > 10) {
 			throw new RegraDeNegocioException("A senha deve ter entre 4 e 10 caracteres", Response.Status.BAD_REQUEST);
 		}
-		
+	}
+	
+	private void validarQuantidadeStefamons(Jogador jogador) {
 		if (jogador.getStefamons().size() < 1 || jogador.getStefamons().size() > 6) {
 			throw new RegraDeNegocioException("É obrigatório no mínimo 1 stefamon e no máximo 6 stefamons");
 		}
